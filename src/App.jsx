@@ -1,9 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { Sun, Moon, Github, Linkedin, Mail, Code2, Monitor, Zap, Layout, Search, ArrowRight, ExternalLink, CheckCircle } from 'lucide-react';
-import mDegrade from '../public/m-degrade.png';
-
-
 // --- Variáveis de Animação ---
 const fadeInUp = {
   hidden: { opacity: 0, y: 50 },
@@ -27,7 +24,7 @@ const projectsData = [
       en: 'Landing page to present the plans and services of an internet company.',
     },
     techs: ['Vite','React', 'JS', 'Tailwind CSS', 'Scroll Reveal'],
-    image: '../public/lp-mog.png',
+    image: '/lp-mog.png',
     demoUrl: 'https://single-pages-mognet.wekutu.easypanel.host/',
     repoUrl: '#',
   },
@@ -42,7 +39,7 @@ const projectsData = [
       en: 'Landing page to present the plans and services of an internet company.',
     },
     techs: ['Vite','React', 'JS', 'Tailwind CSS', 'Scroll Reveal'],
-    image: '../public/lp-je.png',
+    image: '/lp-je.png',
     demoUrl: 'https://site.jeinternet.com.br/',
     repoUrl: '#',
   },
@@ -57,7 +54,7 @@ const projectsData = [
       en: 'Responsive web system developed for restaurants, snack bars, and delivery services that want to digitize their menu and increase sales.',
     },
     techs: ['HTML', 'CSS', 'JS'],
-    image: '../public/cadarpio.png',
+    image: '/cadarpio.png',
     demoUrl: 'https://cardapio-online-coral.vercel.app/',
     repoUrl: '#',
   },
@@ -72,7 +69,7 @@ const projectsData = [
       en: 'project in progress',
     },
     techs: ['#'],
-    image: '/projects/design-system.png',
+    image: null,
     demoUrl: '#',
     repoUrl: '#',
   },
@@ -317,7 +314,7 @@ export default function App() {
       <nav className="fixed w-full z-40 glass-nav transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <span className="text-xl font-bold tracking-tighter">
-            <img src={mDegrade} alt="" width={60} height={60} />
+            <img src="/m-degrade.png" alt="" width={60} height={60} />
             {/* MizaelDev */}
           </span>
           <div className="flex items-center gap-6">
@@ -664,4 +661,5 @@ export default function App() {
     </div>
   );
 }
+
 
