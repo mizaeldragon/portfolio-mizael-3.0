@@ -313,9 +313,9 @@ export default function App() {
       {/* --- Navbar Fixa com Glassmorphism --- */}
       <nav className="fixed w-full z-40 glass-nav transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <span className="text-xl font-bold tracking-tighter">
+          <span className="text-xl font-bold tracking-tighter flex items-end gap-0.5">
             <img src="/m-degrade.png" alt="" width={60} height={60} />
-            {/* MizaelDev */}
+            <span className='text-[21px]'>izaelDev</span>
           </span>
           <div className="flex items-center gap-6">
             <a href="#projetos" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="hidden md:block hover:text-gold transition-colors font-medium">{t.nav.projects}</a>
