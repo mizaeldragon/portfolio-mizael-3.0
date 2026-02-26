@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { Sun, Moon, Github, Linkedin, Mail, Code2, Monitor, Zap, Layout, Search, ArrowRight, ExternalLink, CheckCircle } from 'lucide-react';
-import mDegrade from '../src/assets/m-degrade.png';
+import mDegrade from '../public/m-degrade.png';
 
 
 // --- Variáveis de Animação ---
