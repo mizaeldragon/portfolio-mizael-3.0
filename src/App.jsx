@@ -59,18 +59,18 @@ const projectsData = [
     repoUrl: '#',
   },
   {
-    id: 'em breve',
+    id: 'lp-pediatra',
     title: {
-      'pt-BR': 'Em breve',
-      en: 'Shortly',
+      'pt-BR': 'landing page pediatra',
+      en: 'landing page pediatrician',
     },
     description: {
-      'pt-BR': 'projeto em execução',
-      en: 'project in progress',
+      'pt-BR': 'Projeto de desenvolvimento de Landing Page profissional para clínica de pediatria, com foco em transmitir confiança, acolhimento e cuidado humanizado.',
+      en: 'Project to develop a professional landing page for a pediatric clinic, focusing on conveying trust, warmth, and humanized care.',
     },
-    techs: ['#'],
-    image: null,
-    demoUrl: '#',
+    techs: ['Vite','React', 'JS', 'Tailwind CSS', 'Frame-Motion'],
+    image: "/lp-pediatra.png",
+    demoUrl: 'https://lp-pediatra.vercel.app/',
     repoUrl: '#',
   },
 ];
