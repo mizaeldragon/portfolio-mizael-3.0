@@ -1,5 +1,5 @@
-﻿import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useSpring } from 'framer-motion';
+﻿import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { Sun, Moon, Github, Linkedin, Mail, Code2, Monitor, Zap, Layout, Search, ArrowRight, ExternalLink, CheckCircle } from 'lucide-react';
 // --- Variáveis de Animação ---
 const fadeInUp = {
@@ -61,8 +61,8 @@ const projectsData = [
   {
     id: 'lp-pediatra',
     title: {
-      'pt-BR': 'landing page pediatra',
-      en: 'landing page pediatrician',
+      'pt-BR': 'Landing page pediatra',
+      en: 'Landing page pediatrician',
     },
     description: {
       'pt-BR': 'Projeto de desenvolvimento de Landing Page profissional para clínica de pediatria, com foco em transmitir confiança, acolhimento e cuidado humanizado.',
@@ -194,6 +194,71 @@ const translations = {
   },
 };
 
+function ProjectCard({ project, idx, total, progress, language, onEnter, onLeave, viewProjectLabel }) {
+  const compressedProgress = useTransform(progress, [0, 0.55], [0, 1]);
+  const segment = 1 / total;
+  const start = idx * segment * 0.8;
+  const end = Math.min(1, start + segment * 1.4);
+
+  const opacity = useTransform(compressedProgress, [start, end], [0.2, 1]);
+  const y = useTransform(compressedProgress, [start, end], [80, 0]);
+  const rotateX = useTransform(compressedProgress, [start, end], [60, 0]);
+  const scale = useTransform(compressedProgress, [start, end], [0.95, 1]);
+
+  return (
+    <motion.div
+      style={{ opacity, y, rotateX, scale, transformOrigin: 'bottom center' }}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      className="group relative rounded-2xl overflow-hidden bg-white dark:bg-white/5 border border-gray-200 dark:border-graphite transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_14px_34px_rgba(255,74,18,0.08)]"
+    >
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-transparent z-20">
+        <div className="h-full w-full origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 delay-100 ease-out bg-gradient-gold" />
+      </div>
+
+      <div className="h-64 bg-gray-200 dark:bg-white/10 relative overflow-hidden">
+        {project.image ? (
+          <img
+            src={project.image}
+            alt={project.title[language]}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        ) : null}
+        <div className="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+        <div className="absolute inset-0 flex items-center justify-center text-gray-400 pointer-events-none">
+          <Monitor className="w-16 h-16 opacity-20" />
+        </div>
+      </div>
+
+      <div className="p-8">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h3 className="text-2xl font-bold mb-2 text-gradient-gold">{project.title[language]}</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">{project.description[language]}</p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 mb-6">
+          {project.techs.map((tech) => (
+            <span key={tech} className="px-3 py-1 text-xs rounded-full bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300">
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex">
+          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="flex-1 text-center py-2 badge-gradient-gold hover-gradient-gold text-black dark:text-white rounded-lg font-medium transition-colors border">
+            {viewProjectLabel}
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 export default function App() {
   // --- Estados ---
   const [isDark, setIsDark] = useState(true);
@@ -204,6 +269,8 @@ export default function App() {
   // --- Scroll Progress ---
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const projectsSectionRef = useRef(null);
+  const { scrollYProgress: projectsProgress } = useScroll({ target: projectsSectionRef, offset: ['start end', 'end start'] });
   const t = translations[language];
   const differentialIcons = [Code2, Layout, Zap, CheckCircle];
 
@@ -476,7 +543,7 @@ export default function App() {
       </section>
 
       {/* --- 4. Projetos Principais --- */}
-      <section id="projetos" className="py-24 relative">
+      <section id="projetos" ref={projectsSectionRef} className="py-24 relative">
         {/* Background sutil para diferenciar a seção */}
         <div className="absolute inset-0 bg-gray-100/50 dark:bg-white/[0.02] -z-10" />
         <div className="max-w-7xl mx-auto px-6">
@@ -485,64 +552,23 @@ export default function App() {
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">{t.projects.subtitle}</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {projectsData.map((project) => (
-              <motion.div 
+          <div className="grid md:grid-cols-2 gap-8 [perspective:1200px]">
+            {projectsData.map((project, idx) => (
+              <ProjectCard
                 key={project.id}
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
-                onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}
-                className="group relative rounded-2xl overflow-hidden bg-white dark:bg-white/5 border border-gray-200 dark:border-graphite transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_14px_34px_rgba(255,74,18,0.08)]"
-              >
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-transparent z-20">
-                  <div className="h-full w-full origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 delay-100 ease-out bg-gradient-gold" />
-                </div>
-                {/* Mockup de Imagem do Projeto */}
-                <div className="h-64 bg-gray-200 dark:bg-white/10 relative overflow-hidden">
-                  {project.image ? (
-                    <img
-                      src={project.image}
-                      alt={project.title[language]}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
-                  ) : null}
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-400 pointer-events-none">
-                    <Monitor className="w-16 h-16 opacity-20" />
-                  </div>
-                </div>
-                
-                <div className="p-8">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-2xl font-bold mb-2 text-gradient-gold">{project.title[language]}</h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm">{project.description[language]}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.techs.map((tech) => (
-                      <span key={tech} className="px-3 py-1 text-xs rounded-full bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex">
-                    <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="flex-1 text-center py-2 badge-gradient-gold hover-gradient-gold text-black dark:text-white rounded-lg font-medium transition-colors border">
-                      {t.projects.viewProject}
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
+                project={project}
+                idx={idx}
+                total={projectsData.length}
+                progress={projectsProgress}
+                language={language}
+                onEnter={handleMouseEnter}
+                onLeave={handleMouseLeave}
+                viewProjectLabel={t.projects.viewProject}
+              />
             ))}
           </div>
         </div>
       </section>
-
       {/* --- 5. Diferenciais --- */}
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-100/40 to-gray-100/70 dark:via-white/[0.015] dark:to-white/[0.03] -z-20" />
@@ -672,4 +698,19 @@ export default function App() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
