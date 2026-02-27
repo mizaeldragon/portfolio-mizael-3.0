@@ -73,6 +73,22 @@ const projectsData = [
     demoUrl: 'https://lp-pediatra.vercel.app/',
     repoUrl: '#',
   },
+
+   {
+    id: 'Em breve',
+    title: {
+      'pt-BR': 'EM BREVE',
+      en: 'COMING SOON',
+    },
+    description: {
+      'pt-BR': 'Projeto em execução.',
+      en: 'Project underway.',
+    },
+    techs: ['#'],
+    image: "",
+    demoUrl: '#',
+    repoUrl: '#',
+  },
 ];
 
 const translations = {
