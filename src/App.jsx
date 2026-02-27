@@ -296,7 +296,7 @@ export default function App() {
           opacity: isHovering ? 0.95 : 0.8,
           boxShadow: isHovering ? '0 0 18px rgba(227,25,20,0.28)' : '0 0 0 rgba(0,0,0,0)'
         }}
-        transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
+        transition={{ type: "spring", stiffness: 600, damping: 28, mass: 0.5 }}
         style={{
           backgroundImage: 'linear-gradient(90deg, #ff2216 0%, #E31914 45%, #FF7A1A 100%)',
           WebkitMaskImage: 'radial-gradient(circle, transparent 52%, black 58%, black 72%, transparent 78%)',
@@ -410,10 +410,21 @@ export default function App() {
             </div>
 
             <div className="mt-12 flex justify-center gap-6">
-              {[Github, Linkedin, Mail].map((Icon, idx) => (
-                <a key={idx} href="#" 
-                   onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}
-                   className="p-3 bg-gray-100 dark:bg-white/5 rounded-full hover-gradient-gold transition-all duration-300">
+              {[
+                { icon: Github, href: "https://github.com/mizaeldragon", label: "GitHub" },
+                { icon: Linkedin, href: "https://www.linkedin.com/in/mizael-costa-santos/", label: "LinkedIn" },
+                { icon: Mail, href: "mailto:mizaeelsantos056@gmail.com", label: "E-mail" },
+              ].map(({ icon: Icon, href, label }, idx) => (
+                <a
+                  key={idx}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  className="p-3 bg-gray-100 dark:bg-white/5 rounded-full hover-gradient-gold transition-all duration-300"
+                >
                   <Icon className="w-6 h-6" />
                 </a>
               ))}
@@ -661,5 +672,4 @@ export default function App() {
     </div>
   );
 }
-
 
