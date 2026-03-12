@@ -281,6 +281,10 @@ export default function App() {
   const [language, setLanguage] = useState('pt-BR');
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [trailPoints, setTrailPoints] = useState(() => Array.from({ length: 12 }, () => ({ x: 0, y: 0 })));
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const trailRef = useRef(Array.from({ length: 12 }, () => ({ x: 0, y: 0 })));
+  const trailRafRef = useRef(null);
 
   // --- Scroll Progress ---
   const { scrollYProgress } = useScroll();
@@ -320,14 +324,39 @@ export default function App() {
 
     // Listener para o cursor customizado
     const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      const nextPos = { x: e.clientX, y: e.clientY };
+      setMousePos(nextPos);
+      mouseRef.current = nextPos;
     };
 
+    const animateTrail = () => {
+      const next = [...trailRef.current];
+      next[0] = {
+        x: next[0].x + (mouseRef.current.x - next[0].x) * 0.34,
+        y: next[0].y + (mouseRef.current.y - next[0].y) * 0.34,
+      };
+
+      for (let i = 1; i < next.length; i += 1) {
+        next[i] = {
+          x: next[i].x + (next[i - 1].x - next[i].x) * 0.34,
+          y: next[i].y + (next[i - 1].y - next[i].y) * 0.34,
+        };
+      }
+
+      trailRef.current = next;
+      setTrailPoints(next);
+      trailRafRef.current = window.requestAnimationFrame(animateTrail);
+    };
+
+    trailRafRef.current = window.requestAnimationFrame(animateTrail);
     mediaQuery.addEventListener('change', handleSystemThemeChange);
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
       mediaQuery.removeEventListener('change', handleSystemThemeChange);
       window.removeEventListener('mousemove', handleMouseMove);
+      if (trailRafRef.current) {
+        window.cancelAnimationFrame(trailRafRef.current);
+      }
     };
   }, []);
 
@@ -370,6 +399,28 @@ export default function App() {
     <div className="relative min-h-screen bg-gray-50 text-gray-900 dark:bg-dark dark:text-gray-100 transition-colors duration-500">
       
       {/* --- Cursor Customizado (Visível apenas em Desktop) --- */}
+      <div className="fixed top-0 left-0 pointer-events-none z-40 hidden lg:block">
+        {trailPoints.map((point, idx) => {
+          const size = Math.max(5, 14 - idx * 0.65);
+          const alpha = Math.max(0.12, 0.62 - idx * 0.045);
+          return (
+            <span
+              key={idx}
+              className="absolute rounded-full"
+              style={{
+                left: point.x,
+                top: point.y,
+                width: size,
+                height: size,
+                transform: 'translate(-50%, -50%)',
+                opacity: alpha,
+                background: 'radial-gradient(circle, #ffd7ba 0%, #ff7a1a 45%, #e31914 100%)',
+                boxShadow: `0 0 ${Math.max(4, 18 - idx)}px rgba(227,25,20,${Math.max(0.1, 0.38 - idx * 0.02)})`,
+              }}
+            />
+          );
+        })}
+      </div>
       <motion.div 
         className="fixed top-0 left-0 w-6 h-6 rounded-full pointer-events-none z-50 hidden lg:block"
         animate={{
@@ -714,6 +765,14 @@ export default function App() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
 
 
 
