@@ -58,6 +58,23 @@ const projectsData = [
     demoUrl: 'https://cardapio-online-coral.vercel.app/',
     repoUrl: '#',
   },
+
+  {
+    id: 'Site Institucional',
+    title: {
+      'pt-BR': 'Site Institucional',
+      en: 'Institutional Site',
+    },
+    description: {
+      'pt-BR': 'Site institucional feito para empresa especializada em limpezas, com intuito de mostrar seus serviços e capturar clientes.',
+      en: 'Institutional website created for a company specializing in cleaning services, with the aim of showcasing its services and attracting clients.',
+    },
+    techs: ['Vite','React', 'JS', 'Tailwind CSS', 'GSAP'],
+    image: "/barretos.png",
+    demoUrl: 'https://barretoscleaningsolutions.com/',
+    repoUrl: '#',
+  },
+
   {
     id: 'lp-pediatra',
     title: {
@@ -74,21 +91,7 @@ const projectsData = [
     repoUrl: '#',
   },
 
-   {
-    id: 'Em breve',
-    title: {
-      'pt-BR': 'EM BREVE',
-      en: 'COMING SOON',
-    },
-    description: {
-      'pt-BR': 'Projeto em execução.',
-      en: 'Project underway.',
-    },
-    techs: ['#'],
-    image: "",
-    demoUrl: '#',
-    repoUrl: '#',
-  },
+  
 ];
 
 const translations = {
