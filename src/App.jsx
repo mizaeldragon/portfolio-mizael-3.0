@@ -281,6 +281,7 @@ export default function App() {
   const [language, setLanguage] = useState('pt-BR');
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isNavScrolled, setIsNavScrolled] = useState(false);
   const [trailPoints, setTrailPoints] = useState(() => Array.from({ length: 12 }, () => ({ x: 0, y: 0 })));
   const mouseRef = useRef({ x: 0, y: 0 });
   const trailRef = useRef(Array.from({ length: 12 }, () => ({ x: 0, y: 0 })));
@@ -371,6 +372,16 @@ export default function App() {
     document.documentElement.lang = language;
   }, [language]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsNavScrolled(window.scrollY > 30);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Alterna entre Dark e Light Mode
   const toggleTheme = () => {
     if (!isDark) {
@@ -445,8 +456,10 @@ export default function App() {
       />
 
       {/* --- Navbar Fixa com Glassmorphism --- */}
-      <nav className="fixed w-full z-40 glass-nav transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <nav className={`fixed top-0 left-0 w-full z-40 transition-all duration-500 ${isNavScrolled ? 'pt-3 px-4' : ''}`}>
+        <div className={`mx-auto flex justify-between items-center px-6 py-4 transition-all duration-500 ${isNavScrolled
+          ? 'max-w-6xl rounded-2xl border border-white/15 dark:border-white/10 bg-white/75 dark:bg-[#0d0d14]/85 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.32)]'
+          : 'max-w-7xl bg-transparent border border-transparent shadow-none backdrop-blur-0'}`}>
           <span className="text-xl font-bold tracking-tighter flex items-end gap-0.5">
             <img src="/m-degrade.png" alt="" width={60} height={60} />
             <span className='text-[21px]'>izaelDev</span>
@@ -765,6 +778,8 @@ export default function App() {
     </div>
   );
 }
+
+
 
 
 
