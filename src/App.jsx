@@ -775,7 +775,7 @@ export default function App() {
       {/* --- 8. Rodapé --- */}
       <footer className="bg-white/50 dark:bg-white/5 py-8 border-t border-gray-200 dark:border-white/10 transition-all">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-center items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-          <p>&copy; {new Date().getFullYear()} MizaelDev {t.footer.rights}</p>
+          <p>&copy; {new Date().getFullYear()} Mizael Costa Santos — CNPJ 63.679.770/0001-22 {t.footer.rights}</p>
         </div>
       </footer>
     </div>
